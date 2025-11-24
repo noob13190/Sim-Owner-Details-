@@ -1,0 +1,182 @@
+<!DOCTYPE html><html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shahzaib Tech - SIM Checker</title><style>
+    body {
+        margin: 0;
+        font-family: 'Courier New', monospace;
+        background: #000;
+        color: #0aff0a;
+        overflow-x: hidden;
+    }
+    .header {
+        text-align: center;
+        margin-top: 60px;
+        font-size: 48px;
+        font-weight: bold;
+        text-shadow: 0 0 20px #0aff0a, 0 0 40px #00ff00;
+        animation: glitch 2s infinite;
+    }
+    @keyframes glitch {
+        0% { text-shadow: 2px 2px #00ff00; }
+        20% { text-shadow: -2px -2px #0aff0a; }
+        40% { text-shadow: 3px -3px #0aff0a; }
+        60% { text-shadow: -3px 3px #00ff00; }
+        80% { text-shadow: 2px -2px #0aff0a; }
+        100% { text-shadow: 0 0 20px #00ff00; }
+    }
+
+    .box {
+        background: rgba(0, 255, 0, 0.05);
+        border: 1px solid #00ff00;
+        padding: 25px;
+        max-width: 500px;
+        margin: 60px auto;
+        border-radius: 10px;
+        box-shadow: 0 0 15px #00ff00;
+    }
+
+    input {
+        width: 95%;
+        padding: 12px;
+        background: #000;
+        color: #00ff00;
+        border: 1px solid #00ff00;
+        border-radius: 8px;
+        font-size: 16px;
+        outline: none;
+        box-shadow: 0 0 10px #00ff00;
+    }
+
+    button {
+        animation: glow 1.5s infinite alternate;
+        margin-top: 15px;
+        width: 100%;
+        padding: 12px;
+        background: #00ff00;
+        color: #000;
+        font-size: 18px;
+        border: none;
+        border-radius: 8px;
+        font-weight: bold;
+        cursor: pointer;
+        box-shadow: 0 0 20px #00ff00;
+    }
+    button:hover {
+        background: #0aff0a;
+    }
+
+    #result {
+        font-family: 'Courier New', monospace;
+        font-size: 14px;
+        color: #00ff00;
+        text-shadow: 0 0 5px #00ff00; {
+        margin-top: 20px;
+        white-space: pre-wrap;
+        border: 1px solid #00ff00;
+        padding: 10px;
+        border-radius: 8px;
+        background: rgba(0,255,0,0.05);
+        box-shadow: 0 0 10px #00ff00;
+    }
+
+        /* Matrix Rain Background */
+    canvas#matrix {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: -1;
+        background: black;
+    }
+
+</style>
+</head>
+<body>
+<canvas id="matrix"></canvas>
+<script>
+// Matrix Rain Animation
+const canvas = document.getElementById('matrix');
+const ctx = canvas.getContext('2d');
+canvas.height = window.innerHeight;
+canvas.width = window.innerWidth;const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%^&()&^%'; const lettersArr = letters.split('');
+
+const fontSize = 16; const columns = canvas.width / fontSize; const drops = [];
+
+for (let i = 0; i < columns; i++) { drops[i] = 1; }
+
+function drawMatrix() { ctx.fillStyle = 'rgba(0, 0, 0, 0.05)'; ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+ctx.fillStyle = '#00ff00';
+ctx.font = fontSize + 'px Courier New';
+
+for (let i = 0; i < drops.length; i++) {
+    const text = lettersArr[Math.floor(Math.random() * lettersArr.length)];
+    ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+
+    if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+        drops[i] = 0;
+    }
+    drops[i]++;
+}
+
+}
+
+setInterval(drawMatrix, 40); </script>
+
+<<div class="header" id="title"></div>
+
+<script>
+// Typing Animation
+const titleText = "SHAHZAIB TECH";
+let i = 0;
+function typeTitle() {
+    if (i < titleText.length) {
+        document.getElementById("title").innerHTML += titleText.charAt(i);
+        i++;
+        setTimeout(typeTitle, 150);
+    }
+}
+typeTitle();
+</script><div class="box">
+    <h2 style="text-align:center; text-shadow:0 0 10px #0aff0a;">SIM Details Checker</h2><input type="text" id="number" placeholder="Enter phone number e.g. 03001234567">
+
+<button onclick="checkDetails()">CHECK</button>
+
+<div id="result"></div>
+
+</div><script>
+function checkDetails() {
+    let number = document.getElementById("number").value;
+    if (number.trim() === "") {
+        alert("Enter a SIM number!");
+        return;
+    }
+
+    let apiURL = `https://shadowscriptz.xyz/public_apis/simdetailsapi.php?number=${number}`;
+
+    document.getElementById("result").innerHTML = "Fetching details...";
+
+    fetch(apiURL)
+        .then(response => response.json())
+        .then(data => {
+            let text = JSON.stringify(data, null, 2);
+            document.getElementById("result").innerHTML = `<pre>${text}</pre>`;})
+    .catch(err => {
+        document.getElementById("result").innerHTML = "Error fetching data.";
+    });
+
+} </script>
+
+<script>
+// Terminal-style loader
+function showLoader() {
+    document.getElementById("result").innerHTML = `>
+> Fetching data...
+> Please wait...
+`;
+}
+</script></body>
+</html>
